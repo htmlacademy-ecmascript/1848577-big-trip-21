@@ -1,8 +1,6 @@
 import { render } from '../render.js';
 import EventEditView from '../view/event-edit-view.js';
 import EventListView from '../view/event-list-view.js';
-import FilterView from '../view/filter-view.js';
-import InfoView from '../view/info-view.js';
 import PointView from '../view/point-view.js';
 import SortView from '../view/sort-view.js';
 
