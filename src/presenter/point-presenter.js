@@ -4,7 +4,7 @@ import EventListView from '../view/event-list-view.js';
 import PointView from '../view/point-view.js';
 import SortView from '../view/sort-view.js';
 
-export default class EventsPresenter {
+export default class PointPresenter {
   eventListView = new EventListView();
 
   constructor({eventsContainer}) {
