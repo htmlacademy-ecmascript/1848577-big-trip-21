@@ -1,11 +1,11 @@
-import { createPoint } from '../mock/mock';
+export default class PointsModel {
 
-const POINT_COUNT = 3;
+  constructor(service) {
+    this.service = service;
+    this.points = this.service.getPoints();
+  }
 
-export default class PointModel {
-  points = Array.from({length: POINT_COUNT}, createPoint);
-
-  getPoints() {
+  get() {
     return this.points;
   }
 }

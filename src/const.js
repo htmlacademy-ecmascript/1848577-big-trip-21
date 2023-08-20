@@ -1,4 +1,66 @@
-const TYPES_OF_POINTS = ['Taxi', 'Bus', 'Train', 'Ship', 'Drive', 'Flight', 'Check-in', 'Sightseeing', 'Restaurant'];
-const DATE_FORMAT = 'DD/MM/YY HH:mm';
+const CITIES = [
+  'Bologna',
+  'Geneva',
+  'Amsterdam',
+  'Moscow',
+  'London',
+  'Rome'
+];
 
-export { TYPES_OF_POINTS, DATE_FORMAT };
+const DESCRIPTION_PICTURES = [
+  'Lorem ipsum dolor sit amet.',
+  'Phasellus eros mauris.',
+  'In rutrum ac purus sit amet tempus.'
+];
+
+const DESCRIPTIONS = [
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget. Fusce tristique felis at fermentum pharetra. Aliquam id orci ut lectus varius viverra.',
+  'Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum. Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui. Sed sed nisi sed augue convallis suscipit in sed felis.',
+  'Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus. In rutrum ac purus sit amet tempus.'
+];
+
+const TYPEPOINTS = [
+  'taxi',
+  'bus',
+  'train',
+  'ship',
+  'drive',
+  'flight',
+  'check-in',
+  'sightseeing',
+  'restaurant',
+];
+
+const DATE_FORMAT = {
+  FULL_DATA: 'DD/MM/YY HH:mm',
+  HOUR_MINUTE: 'HH:mm',
+  MONTH_DAY: 'MMM DD',
+};
+
+const DEFAULT_TYPE = 'flight';
+
+const POINT_EMPTY = {
+  basePrice: 0,
+  dateFrom: null,
+  dateTo: null,
+  destination: null,
+  isFavorite: false,
+  offers: [],
+  type: DEFAULT_TYPE,
+};
+
+const Duration = {
+  MIN: 59,
+  DAY: 7,
+  HOUR: 23
+};
+
+const FAVORITE = [
+  true,
+  false
+];
+
+const DESTINATIONS_COUNT = 5;
+const POINTS_COUNT = 5;
+
+export {TYPEPOINTS, DATE_FORMAT, DEFAULT_TYPE, CITIES, DESCRIPTIONS, POINT_EMPTY, DESCRIPTION_PICTURES, Duration, FAVORITE, DESTINATIONS_COUNT, POINTS_COUNT};
