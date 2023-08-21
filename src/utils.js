@@ -56,7 +56,7 @@ const dateDiff = (dateFrom, dateTo) => {
   }
 };
 
-const CreateToUpperCase = (word) =>
+const createToUpperCase = (word) =>
   word.charAt(0).toUpperCase() + word.slice(1);
 
-export {getRandomInteger, getRandomArrayElement, getDate, humanizeDate, dateDiff, CreateToUpperCase};
+export {getRandomInteger, getRandomArrayElement, getDate, humanizeDate, dateDiff, createToUpperCase};

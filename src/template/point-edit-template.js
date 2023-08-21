@@ -1,4 +1,4 @@
-import { humanizeDate, CreateToUpperCase } from '../utils.js';
+import { humanizeDate, createToUpperCase } from '../utils.js';
 import { DATE_FORMAT } from '../const.js';
 
 const createOfferSelectorTemplate = (offers) =>
@@ -39,7 +39,7 @@ const createTypesListTemplate = (offerTypes, type) => {
           value="${item.type}"
           ${(item.type === type) ? 'checked' : ''}
         >
-        <label class="event__type-label  event__type-label--${item.type}" for="event-type-${item.type}-1">${CreateToUpperCase(item.type)}</label>
+        <label class="event__type-label  event__type-label--${item.type}" for="event-type-${item.type}-1">${createToUpperCase(item.type)}</label>
       </div>`)).join('');
 
   return (
@@ -58,9 +58,9 @@ const createTypesListTemplate = (offerTypes, type) => {
 };
 
 const createPointEditTemplate = ({ point, pointDestination, pointOffer }) => {
-  const { dateFrom, dateTo, type, basePrice } = point;
+  const { dateFrom, dateTo, type, basePrice, destination } = point;
   const offersByType = pointOffer.find((item) => item.type === type).offers;
-  const currentDestination = pointDestination.find((item) => item.id === point.destination);
+  const currentDestination = pointDestination.find((item) => item.id === destination);
 
   return (
     `<li class="trip-events__item">
