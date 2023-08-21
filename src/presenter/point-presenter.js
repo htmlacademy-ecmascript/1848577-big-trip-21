@@ -1,23 +1,48 @@
 import { render } from '../render.js';
-import EventEditView from '../view/event-edit-view.js';
-import EventListView from '../view/event-list-view.js';
+import PointEditView from '../view/point-edit-view.js';
+import TripListView from '../view/trip-list-view.js';
 import PointView from '../view/point-view.js';
 import SortView from '../view/sort-view.js';
+import PointListAbsenceView from '../view/point-list-absence-view.js';
 
 export default class PointPresenter {
-  eventListView = new EventListView();
+  tripListComponent = new TripListView();
 
-  constructor({eventsContainer}) {
-    this.eventsContainer = eventsContainer;
+  constructor({pointContainer, pointsModel, offersModel, destinationsModel}) {
+    this.pointContainer = pointContainer;
+    this.pointsModel = pointsModel;
+    this.offersModel = offersModel;
+    this.destinationsModel = destinationsModel;
+    this.points = [...this.pointsModel.get()];
   }
 
   init() {
-    render(new SortView(), this.eventsContainer);
-    render(this.eventListView, this.eventsContainer);
-    render(new EventEditView(), this.eventListView.getElement());
+    render(
+      new PointEditView({
+        point: this.points[0],
+        pointDestination: this.destinationsModel.get(),
+        pointOffer: this.offersModel.get()
+      }),
+      this.tripListComponent.getElement()
+    );
 
-    for (let i = 0; i < 3; i++) {
-      render(new PointView(), this.eventListView.getElement());
+    render(new SortView(), this.pointContainer);
+    render(this.tripListComponent, this.pointContainer);
+
+    if (this.points.length) {
+      this.points.forEach((point) => {
+        render(new PointView({
+          point,
+          pointDestination: this.destinationsModel.getById(point.destination),
+          pointOffer: this.offersModel.getByType(point.type)
+
+        }),
+        this.tripListComponent.getElement()
+        );
+      });
+
+    } else {
+      render(new PointListAbsenceView(), this.pointContainer);
     }
   }
 }

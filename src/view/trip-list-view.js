@@ -1,9 +1,9 @@
 import { createElement } from '../render.js';
-import { createEventCreatorTemplate } from '../template/event-edit-template.js';
+import { createTripListTemplate } from '../template/trip-list-template.js';
 
-export default class EventEditView {
+export default class TripListView {
   getTemplate() {
-    return createEventCreatorTemplate();
+    return createTripListTemplate();
   }
 
   getElement() {
