@@ -1,25 +1,17 @@
-import { createElement } from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import { createPointListAbsenceTemplate } from '../template/point-list-absence-template.js';
 
-export default class PointListAbsenceView {
+export default class PointListAbsenceView extends AbstractView {
+  #point = null;
+  #offers = null;
+
   constructor({point, offers}) {
-    this.point = point;
-    this.offers = offers;
+    super();
+    this.#point = point;
+    this.#offers = offers;
   }
 
-  getTemplate() {
+  get template() {
     return createPointListAbsenceTemplate();
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
   }
 }
