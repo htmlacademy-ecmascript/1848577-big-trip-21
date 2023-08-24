@@ -1,5 +1,5 @@
 import { DATE_FORMAT } from '../const.js';
-import { humanizeDate, dateDiff } from '../utils.js';
+import { humanizeDate, dateDiff } from '../utils/utils.js';
 
 const createViewOffersList = (offers) =>
   `<ul class="event__selected-offers">

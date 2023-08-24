@@ -22,32 +22,70 @@ export default class PointPresenter {
   }
 
   init() {
-    render(
-      new PointEditView({
-        point: this.#points[0],
-        pointDestination: this.#destinationsModel.destination,
-        pointOffer: this.#offersModel.offers
-      }),
-      this.#tripListComponent.template
-    );
+    this.#renderPage();
+  }
 
+  #renderPage() {
     render(new SortView(), this.#pointContainer);
     render(this.#tripListComponent, this.#pointContainer);
+    this.#renderPointList();
+  }
 
+  #renderPointList() {
     if (this.#points.length) {
       this.#points.forEach((point) => {
-        render(new PointView({
-          point,
-          pointDestination: this.#destinationsModel.getById(point.destination),
-          pointOffer: this.#offersModel.getByType(point.type)
-
-        }),
-        this.#tripListComponent.template
-        );
+        this.#renderPoint(point);
       });
-
     } else {
       render(new PointListAbsenceView(), this.#pointContainer);
     }
+  }
+
+  #renderPoint(point) {
+    const onEscKeyDown = (evt) => {
+      if (evt.key === 'Escape') {
+        evt.preventDefault();
+        replaceFormToItem();
+        document.removeEventListener('keydown', onEscKeyDown);
+      }
+    };
+
+    const pointEditComponent = new PointEditView({
+      point,
+      pointDestinations: this.#destinationsModel.destinations,
+      pointOffers: this.#offersModel.offers,
+      onFormSubmit: () => {
+        replaceFormToItem();
+        document.removeEventListener('keydown', onEscKeyDown);
+      },
+      onCloseButtonClick: () => {
+        replaceFormToItem();
+        document.removeEventListener('keydown', onEscKeyDown);
+      },
+      onDeleteButtonClick: () => {
+        document.removeEventListener('keydown', onEscKeyDown);
+        remove(pointEditComponent);
+      },
+    });
+
+    const eventPointComponent = new PointView({
+      point,
+      pointDestination: this.#destinationsModel.getById(point.destination),
+      pointOffer: this.#offersModel.getByType(point.type),
+      onClick: () => {
+        replaceItemToForm();
+        document.addEventListener('keydown', onEscKeyDown);
+      }
+    });
+
+    function replaceItemToForm() {
+      replace(pointEditComponent, eventPointComponent);
+    }
+
+    function replaceFormToItem() {
+      replace(eventPointComponent, pointEditComponent);
+    }
+
+    render(eventPointComponent, this.#tripListComponent.element);
   }
 }

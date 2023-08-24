@@ -1,4 +1,5 @@
-import { getRandomInteger, getDate, getRandomArrayElement } from '../utils.js';
+import { getRandomInteger, getRandomArrayElement } from '../utils/common.js';
+import { getDate } from '../utils/utils.js';
 import { FAVORITE } from '../const.js';
 
 const generateMockPoints = (type, destinationId, offerIds) => ({
