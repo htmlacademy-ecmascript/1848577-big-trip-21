@@ -1,15 +1,6 @@
 import dayjs from 'dayjs';
-import { Duration } from './const';
-
-const getRandomInteger = (min, max) => {
-  const lower = Math.ceil(Math.min(min, max));
-  const upper = Math.floor(Math.max(min, max));
-  const result = Math.random() * (upper - lower + 1) + lower;
-
-  return Math.floor(result);
-};
-
-const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
+import { getRandomInteger } from './common.js';
+import { Duration } from '../const.js';
 
 const getDate = ({next}) => {
   let date = dayjs().subtract(getRandomInteger(0, Duration.DAY), 'day').toDate();
@@ -59,4 +50,4 @@ const dateDiff = (dateFrom, dateTo) => {
 const createToUpperCase = (word) =>
   word.charAt(0).toUpperCase() + word.slice(1);
 
-export {getRandomInteger, getRandomArrayElement, getDate, humanizeDate, dateDiff, createToUpperCase};
+export { getDate, humanizeDate, dateDiff, createToUpperCase};

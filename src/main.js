@@ -1,10 +1,10 @@
-import { render } from './render.js';
+import { render } from './framework/render.js';
 import FilterView from './view/filter-view.js';
 import InfoView from './view/info-view.js';
 import PointPresenter from './presenter/point-presenter.js';
-import PointsModel from './model/point-model.js';
+import PointsModel from './model/points-model.js';
 import OffersModel from './model/offers-model.js';
-import DestinationsModel from './model/destination-model.js';
+import DestinationsModel from './model/destinations-model.js';
 import MockService from './service/mock-service.js';
 
 const tripFiltersElement = document.querySelector('.trip-events');
