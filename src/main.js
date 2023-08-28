@@ -1,11 +1,9 @@
-import { render } from './framework/render.js';
-import FilterView from './view/filter-view.js';
-import InfoView from './view/info-view.js';
 import PointPresenter from './presenter/point-presenter.js';
 import PointsModel from './model/points-model.js';
 import OffersModel from './model/offers-model.js';
 import DestinationsModel from './model/destinations-model.js';
 import MockService from './service/mock-service.js';
+import TripManagementPresenter from './presenter/trip-managemet-presenter.js';
 
 const tripFiltersElement = document.querySelector('.trip-events');
 const tripEventsFiltersElement = document.querySelector('.trip-controls__filters');
@@ -22,7 +20,11 @@ const pointPresenter = new PointPresenter({
   destinationsModel
 });
 
-render(new InfoView(), tripMainElement, 'afterbegin');
-render(new FilterView(), tripEventsFiltersElement);
+const tripManagementPresenter = new TripManagementPresenter({
+  tripFilterElement: tripEventsFiltersElement,
+  tripMainElement,
+  pointsModel
+});
 
 pointPresenter.init();
+tripManagementPresenter.init();
