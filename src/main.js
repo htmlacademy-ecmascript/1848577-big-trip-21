@@ -1,4 +1,4 @@
-import PointPresenter from './presenter/point-presenter.js';
+import BigTripPresenter from './presenter/big-trip-presenter.js';
 import PointsModel from './model/points-model.js';
 import OffersModel from './model/offers-model.js';
 import DestinationsModel from './model/destinations-model.js';
@@ -13,7 +13,7 @@ const pointsModel = new PointsModel(mockService);
 const offersModel = new OffersModel(mockService);
 const destinationsModel = new DestinationsModel(mockService);
 
-const pointPresenter = new PointPresenter({
+const pointPresenter = new BigTripPresenter({
   pointContainer: tripFiltersElement,
   pointsModel,
   offersModel,

@@ -8,4 +8,6 @@ const getRandomInteger = (min, max) => {
 
 const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
 
-export { getRandomInteger, getRandomArrayElement};
+const updateItem = (items, update) => items.map((item) => item.id === update.id ? update : item);
+
+export { getRandomInteger, getRandomArrayElement, updateItem};
