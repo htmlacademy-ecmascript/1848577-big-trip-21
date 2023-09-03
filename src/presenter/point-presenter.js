@@ -13,6 +13,11 @@ export default class PointPresenter {
   #points = [];
   #tripListComponent = new TripListView();
 
+  #sortComponent = new SortView();
+  #pointListAbsenceComponents = new PointListAbsenceView();
+  #pointEditComponent = null;
+  #pointComponent = null;
+
   constructor({pointContainer, pointsModel, offersModel, destinationsModel}) {
     this.#pointContainer = pointContainer;
     this.#pointsModel = pointsModel;
@@ -26,9 +31,17 @@ export default class PointPresenter {
   }
 
   #renderPage() {
-    render(new SortView(), this.#pointContainer);
+    this.#renderSort();
     render(this.#tripListComponent, this.#pointContainer);
     this.#renderPointList();
+  }
+
+  #renderSort() {
+    render(this.#sortComponent, this.#pointContainer);
+  }
+
+  #renderPointListAbsence() {
+    render(this.#pointListAbsenceComponents, this.#pointContainer);
   }
 
   #renderPointList() {
@@ -37,7 +50,7 @@ export default class PointPresenter {
         this.#renderPoint(point);
       });
     } else {
-      render(new PointListAbsenceView(), this.#pointContainer);
+      this.#renderPointListAbsence();
     }
   }
 
