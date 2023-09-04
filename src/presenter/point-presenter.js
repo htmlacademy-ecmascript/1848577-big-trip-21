@@ -42,7 +42,7 @@ export default class PointPresenter {
     this.#eventPointComponent = new PointView({
       point: this.#point,
       pointDestination: this.#destinationsModel.getById(this.#point.destination),
-      pointOffer: this.#offersModel.getByType(this.#point.type),
+      pointOffers: this.#offersModel.getByType(this.#point.type),
       onOpenClick: this.#handleOpenClick,
       onFavoriteClick: this.#handleFavoriteClick
     });

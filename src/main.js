@@ -13,7 +13,7 @@ const pointsModel = new PointsModel(mockService);
 const offersModel = new OffersModel(mockService);
 const destinationsModel = new DestinationsModel(mockService);
 
-const pointPresenter = new BigTripPresenter({
+const bigTripPresenter = new BigTripPresenter({
   pointContainer: tripFiltersElement,
   pointsModel,
   offersModel,
@@ -26,5 +26,5 @@ const tripManagementPresenter = new TripManagementPresenter({
   pointsModel
 });
 
-pointPresenter.init();
+bigTripPresenter.init();
 tripManagementPresenter.init();

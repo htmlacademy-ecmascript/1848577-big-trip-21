@@ -5,15 +5,15 @@ import { POINT_EMPTY } from '../const.js';
 export default class PointView extends AbstractView {
   #point = null;
   #pointDestination = null;
-  #pointOffer = null;
+  #pointOffers = null;
   #handleOpenClick = null;
   #handleFavoriteClick = null;
 
-  constructor({point = POINT_EMPTY, pointDestination, pointOffer, onOpenClick, onFavoriteClick}) {
+  constructor({point = POINT_EMPTY, pointDestination, pointOffers, onOpenClick, onFavoriteClick}) {
     super();
     this.#point = point;
     this.#pointDestination = pointDestination;
-    this.#pointOffer = pointOffer;
+    this.#pointOffers = pointOffers;
     this.#handleOpenClick = onOpenClick;
     this.#handleFavoriteClick = onFavoriteClick;
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#openClickHandler);
@@ -24,7 +24,7 @@ export default class PointView extends AbstractView {
     return createPointTemplate({
       point: this.#point,
       pointDestination: this.#pointDestination,
-      pointOffer: this.#pointOffer
+      pointOffers: this.#pointOffers
     });
   }
 
