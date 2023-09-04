@@ -13,7 +13,7 @@ const createViewOffersList = (offers) =>
     : ''}
   </ul>`;
 
-const createPointTemplate = ({ point, pointDestination, pointOffer }) => {
+const createPointTemplate = ({ point, pointDestination, pointOffers }) => {
   const { dateFrom, dateTo, type, basePrice, isFavorite } = point;
 
   const dateStart = humanizeDate(dateFrom, DATE_FORMAT.HOUR_MINUTE);
@@ -45,7 +45,7 @@ const createPointTemplate = ({ point, pointDestination, pointOffer }) => {
           &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
         </p>
         <h4 class="visually-hidden">Offers:</h4>
-          ${createViewOffersList(pointOffer)}
+          ${createViewOffersList(pointOffers)}
         <button class="${favoriteClassName}" type="button">
           <span class="visually-hidden">Add to favorite</span>
           <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
