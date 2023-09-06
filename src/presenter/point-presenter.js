@@ -70,6 +70,11 @@ export default class PointPresenter {
     }
   }
 
+  destroy() {
+    remove(this.#pointEditComponent);
+    remove(this.#eventPointComponent);
+  }
+
   #escKeyDownHandler = (evt) => {
     if (evt.key === 'Escape') {
       evt.preventDefault();
