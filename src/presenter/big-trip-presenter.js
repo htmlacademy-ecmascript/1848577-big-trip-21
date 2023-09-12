@@ -77,6 +77,11 @@ export default class BigTripPresenter {
     this.#pointPresenters.clear();
   }
 
+  #handlePointDeletedChange = (point) => {
+    const filterPoints = this.#points.filter((item) => item.id !== point.id);
+    this.#points = filterPoints;
+  };
+
   #sortPoints(sortType) {
     this.#currentSortType = sortType;
     this.#points = sort[this.#currentSortType](this.#points);
@@ -108,7 +113,8 @@ export default class BigTripPresenter {
       offersModel: this.#offersModel,
       destinationsModel: this.#destinationsModel,
       onDataChange: this.#handlePointChange,
-      onModeChange: this.#handleModeChange
+      onModeChange: this.#handleModeChange,
+      onDeleteDataChange: this.#handlePointDeletedChange
     });
 
     pointPresenter.init(point);

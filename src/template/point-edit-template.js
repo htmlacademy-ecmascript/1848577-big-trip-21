@@ -1,9 +1,9 @@
 import { humanizeDate, createToUpperCase } from '../utils/utils.js';
 import { DATE_FORMAT } from '../const.js';
 
-const createOfferSelectorTemplate = (offers) =>
+const createOfferSelectorTemplate = (offers, point) =>
   offers.map((item) => {
-    const isChecked = !offers.includes(item.id);
+    const isChecked = point.offers.includes(item.id);
     const checked = isChecked ? 'checked' : '';
 
     return (
@@ -18,6 +18,17 @@ const createOfferSelectorTemplate = (offers) =>
     );
   }).join('');
 
+const createOffersElementTemplate = (offers, point) => {
+  const offersElement = (offers.length === 0) ? '' :
+    `<section class="event__section  event__section--offers">
+      <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+      <div class="event__available-offers">
+        ${createOfferSelectorTemplate(offers, point)}
+      </div>
+    </section>`;
+  return offersElement;
+};
+
 const setElementPictures = (pictures) =>
   `${(pictures) ?
     `<div class="event__photos-tape">
@@ -26,6 +37,27 @@ const setElementPictures = (pictures) =>
   ).join('')}
       </div>`
     : ''}`;
+
+const createDestinationElementTemplate = (destination) => {
+  const destinationElement = (!destination) ? '' :
+    `<section class="event__section  event__section--destination">
+      <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+      <p class="event__destination-description">${destination.description}</p>
+      <div class="event__photos-container">
+        ${setElementPictures(destination.pictures)}
+      </div>
+    </section>`;
+  return destinationElement;
+};
+
+const createDatalistElement = (destinations) => {
+  const datalistElement = (destinations.length === 0) ? '' :
+    destinations.map((item) => `<option value="${item.name}"></option>`).join('');
+  return `
+    <datalist id="destination-list-1">
+      ${datalistElement}
+    </datalist>`;
+};
 
 const createTypesListTemplate = (offerTypes, type) => {
   const offerType = (offerTypes.length === 0) ? '' :
@@ -57,10 +89,10 @@ const createTypesListTemplate = (offerTypes, type) => {
      </div>`);
 };
 
-const createPointEditTemplate = ({ point, pointDestination, pointOffer }) => {
+const createPointEditTemplate = ({ point, pointDestinations, pointOffer }) => {
   const { dateFrom, dateTo, type, basePrice, destination } = point;
   const offersByType = pointOffer.find((item) => item.type === type).offers;
-  const currentDestination = pointDestination.find((item) => item.id === destination);
+  const currentDestination = pointDestinations.find((item) => item.id === destination);
 
   return (
     `<li class="trip-events__item">
@@ -72,11 +104,7 @@ const createPointEditTemplate = ({ point, pointDestination, pointOffer }) => {
           ${type}
           </label>
           <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${currentDestination.name}" list="destination-list-1">
-          <datalist id="destination-list-1">
-            <option value="Amsterdam"></option>
-            <option value="Geneva"></option>
-            <option value="Chamonix"></option>
-          </datalist>
+          ${createDatalistElement(pointDestinations)}
         </div>
         <div class="event__field-group  event__field-group--time">
           <label class="visually-hidden" for="event-start-time-1">From</label>
@@ -99,18 +127,8 @@ const createPointEditTemplate = ({ point, pointDestination, pointOffer }) => {
         </button>
       </header>
       <section class="event__details">
-        <section class="event__section  event__section--offers">
-          <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-          <div class="event__available-offers">
-          ${createOfferSelectorTemplate(offersByType, point)}
-          </div>
-        </section>
-        <section class="event__section  event__section--destination">
-          <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-          <p class="event__destination-description">${currentDestination.description}</p>
-          <div class="event__photos-container">
-            ${setElementPictures(currentDestination.pictures)}
-          </div>
+        ${createOffersElementTemplate(offersByType, point)}
+        ${createDestinationElementTemplate(currentDestination)}
         </section>
       </section>
     </form>
