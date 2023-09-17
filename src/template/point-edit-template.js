@@ -89,16 +89,16 @@ const createTypesListTemplate = (offerTypes, type) => {
      </div>`);
 };
 
-const createPointEditTemplate = ({ point, pointDestinations, pointOffer }) => {
+const createPointEditTemplate = ({ point, pointDestinations, pointOffers }) => {
   const { dateFrom, dateTo, type, basePrice, destination } = point;
-  const offersByType = pointOffer.find((item) => item.type === type).offers;
+  const offersByType = pointOffers.find((item) => item.type === type).offers;
   const currentDestination = pointDestinations.find((item) => item.id === destination);
 
   return (
     `<li class="trip-events__item">
     <form class="event event--edit" action="#" method="post">
       <header class="event__header">
-      ${createTypesListTemplate(pointOffer, type)}
+      ${createTypesListTemplate(pointOffers, type)}
         <div class="event__field-group  event__field-group--destination">
           <label class="event__label  event__type-output" for="event-destination-1">
           ${type}
