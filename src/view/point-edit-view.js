@@ -11,7 +11,8 @@ export default class PointEditView extends AbstractStatefulView {
   #handleFormSubmit = null;
   #handleCloseClick = null;
   #handleDeleteClick = null;
-  #datepicker = null;
+  #datepickerFrom = null;
+  #datepickerTo = null;
 
   constructor({ point = POINT_EMPTY, pointDestinations, pointOffers, onFormSubmit, onCloseButtonClick, onDeleteButtonClick }) {
     super();
@@ -35,9 +36,14 @@ export default class PointEditView extends AbstractStatefulView {
   removeElement() {
     super.removeElement();
 
-    if (this.#datepicker) {
-      this.#datepicker.destroy();
-      this.#datepicker = null;
+    if (this.#datepickerFrom) {
+      this.#datepickerFrom.destroy();
+      this.#datepickerFrom = null;
+    }
+
+    if (this.#datepickerTo) {
+      this.#datepickerTo.destroy();
+      this.#datepickerTo = null;
     }
   }
 
@@ -68,7 +74,7 @@ export default class PointEditView extends AbstractStatefulView {
   #setDatepicker() {
     if (this._state.dateFrom && this._state.dateTo) {
 
-      this.#datepicker = flatpickr(
+      this.#datepickerFrom = flatpickr(
         this.element.querySelector('#event-start-time-1'),
         {
           dateFormat: 'd/m/y H:i',
@@ -79,30 +85,30 @@ export default class PointEditView extends AbstractStatefulView {
           },
           'time_24hr': true,
           maxDate: this._state.dateTo,
-          onChange: this.#dateFromChangeHandler,
+          onClose: this.#dateFromCloseHandler,
         }
       );
 
-      this.#datepicker = flatpickr(
+      this.#datepickerTo = flatpickr(
         this.element.querySelector('#event-end-time-1'),
         {
           dateFormat: 'd/m/y H:i',
           defaultDate: this._state.dateTo,
           enableTime: true,
           minDate: this._state.dateFrom,
-          onChange: this.#dateToChangeHandler,
+          onClose: this.#dateToCloseHandler,
         }
       );
     }
   }
 
-  #dateFromChangeHandler = ([userDate]) => {
+  #dateFromCloseHandler = ([userDate]) => {
     this.updateElement({
       dateFrom: userDate,
     });
   };
 
-  #dateToChangeHandler = ([userDate]) => {
+  #dateToCloseHandler = ([userDate]) => {
     this.updateElement({
       dateTo: userDate,
     });
