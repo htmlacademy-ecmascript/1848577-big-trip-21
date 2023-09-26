@@ -8,7 +8,7 @@ export default class TripManagementPresenter {
   #tripMainElement = null;
   #tripEventsFiltersElement = null;
 
-  constructor({ pointsModel, filterModel, tripFilterElement: tripEventsFiltersElement, tripMainElement }) {
+  constructor({ pointsModel, filterModel, tripEventsFiltersElement, tripMainElement }) {
     this.#pointsModel = pointsModel;
     this.#filterModel = filterModel;
     this.#tripMainElement = tripMainElement;

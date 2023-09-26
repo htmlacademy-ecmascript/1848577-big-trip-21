@@ -50,7 +50,7 @@ const dateDiff = (dateFrom, dateTo) => {
 const createToUpperCase = (word) =>
   word.charAt(0).toUpperCase() + word.slice(1);
 
-const isDateEqual = (dateA, dateB) =>
+const isDatesEqual = (dateA, dateB) =>
   (dateA === null && dateB === null) || (dayjs(dateA).valueOf() === dayjs(dateB).valueOf());
 
-export { getDate, humanizeDate, dateDiff, createToUpperCase, isDateEqual};
+export { getDate, humanizeDate, dateDiff, createToUpperCase, isDatesEqual };

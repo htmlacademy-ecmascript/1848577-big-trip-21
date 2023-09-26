@@ -21,7 +21,9 @@ const bigTripPresenter = new BigTripPresenter({
   pointContainer: tripFiltersElement,
   pointsModel,
   offersModel,
-  destinationsModel
+  destinationsModel,
+  filterModel,
+  onNewPointDestroy: handleNewPointFormClose
 });
 
 const tripManagementPresenter = new TripManagementPresenter({
@@ -38,6 +40,10 @@ const newEventButtonComponent = new NewEventButtonView({
 function handleNewEventButtonClick() {
   bigTripPresenter.createPoint();
   newEventButtonComponent.element.disabled = true;
+}
+
+function handleNewPointFormClose() {
+  newEventButtonComponent.element.disabled = false;
 }
 
 render(newEventButtonComponent, tripMainElement);

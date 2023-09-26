@@ -48,7 +48,7 @@ export default class BigTripPresenter {
   get points() {
     this.#filterType = this.#filterModel.filter;
     const points = this.#pointsModel.points;
-    const filteredPoints = filter[ this.#filterType](points);
+    const filteredPoints = filter[this.#filterType](points);
 
     if (this.#currentSortType) {
       return sort[this.#currentSortType](filteredPoints);
@@ -69,8 +69,11 @@ export default class BigTripPresenter {
   #renderBigTrip() {
     this.#renderSort();
     render(this.#tripListComponent, this.#pointContainer);
-    this.#renderPointListAbsence();
-    this.#renderPointList();
+    if (this.points.length === 0) {
+      this.#renderPointListAbsence();
+    } else {
+      this.#renderPointList();
+    }
   }
 
   #handleViewAction = (actionType, updateType, update) => {
@@ -106,21 +109,17 @@ export default class BigTripPresenter {
   }
 
   #renderPointListAbsence() {
-    if (this.points.length === 0) {
-      this.#pointListAbsenceComponent = new PointListAbsenceView({
-        filterType: this.#filterType
-      });
+    this.#pointListAbsenceComponent = new PointListAbsenceView({
+      filterType: this.#filterType
+    });
 
-      render(this.#pointListAbsenceComponent, this.#pointContainer);
-    }
+    render(this.#pointListAbsenceComponent, this.#pointContainer);
   }
 
   #renderPointList() {
-    if (this.points.length) {
-      this.points.forEach((point) => {
-        this.#renderPoint(point);
-      });
-    }
+    this.points.forEach((point) => {
+      this.#renderPoint(point);
+    });
   }
 
   #clearBigTrip({resetSortType = false} = {}) {
