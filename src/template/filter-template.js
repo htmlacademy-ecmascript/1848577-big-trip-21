@@ -1,4 +1,4 @@
-const createFilterItemTemplate = (filter, isChecked) => {
+const createFilterItemTemplate = (filter, currentFilterType) => {
   const {type, count} = filter;
 
   return (
@@ -9,7 +9,7 @@ const createFilterItemTemplate = (filter, isChecked) => {
         type="radio"
         name="trip-filter"
         value="${type}"
-        ${isChecked ? 'checked' : ''}
+        ${type === currentFilterType ? 'checked' : ''}
         ${count === 0 ? 'disabled' : ''}
       >
         <label class="trip-filters__filter-label" for="filter-${type}">${type}</label>
@@ -17,9 +17,9 @@ const createFilterItemTemplate = (filter, isChecked) => {
   );
 };
 
-const createFilterTemplate = (filterItems) => {
+const createFilterTemplate = (filterItems, currentFilterType) => {
   const filterItemsTemplate = filterItems
-    .map((filter, index) => createFilterItemTemplate(filter, index === 0))
+    .map((filter) => createFilterItemTemplate(filter, currentFilterType))
     .join('');
   return (
     `<form class="trip-filters" action="#" method="get">

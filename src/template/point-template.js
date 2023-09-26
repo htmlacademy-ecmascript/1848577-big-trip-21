@@ -3,8 +3,8 @@ import { humanizeDate, dateDiff } from '../utils/utils.js';
 
 const createViewOffersList = (offers) =>
   `<ul class="event__selected-offers">
-    ${(offers) ?
-    `${offers.offers.map((item) =>
+    ${(offers.length !== 0) ?
+    `${offers.map((item) =>
       `<li class="event__offer">
         <span class="event__offer-title">${item.title}</span>
           &plus;&euro;&nbsp;
@@ -20,6 +20,14 @@ const createPointTemplate = ({ point, pointDestination, pointOffers }) => {
   const isDiffTime = dateDiff(dateFrom, dateTo);
   const dateEnd = humanizeDate(dateTo, DATE_FORMAT.HOUR_MINUTE);
   const dateMonth = humanizeDate(dateFrom, DATE_FORMAT.MONTH_DAY);
+  const getOffers = () => {
+    const currentOffers = [];
+    for (let i = 0; i <= point.offers.length - 1; i++) {
+      const itemOffer = pointOffers.offers.find((item) => item.id === point.offers[i]);
+      currentOffers.push(itemOffer);
+    }
+    return currentOffers;
+  };
 
   const favoriteClassName = isFavorite
     ? 'event__favorite-btn event__favorite-btn--active'
@@ -45,7 +53,7 @@ const createPointTemplate = ({ point, pointDestination, pointOffers }) => {
           &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
         </p>
         <h4 class="visually-hidden">Offers:</h4>
-          ${createViewOffersList(pointOffers)}
+          ${createViewOffersList(getOffers())}
         <button class="${favoriteClassName}" type="button">
           <span class="visually-hidden">Add to favorite</span>
           <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
