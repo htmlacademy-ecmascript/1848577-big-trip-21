@@ -13,14 +13,14 @@ export default class PointEditView extends AbstractStatefulView {
   #handleDeleteClick = null;
   #datepickerFrom = null;
   #datepickerTo = null;
-  #modeAddFrom = null;
+  #isNew = false;
 
-  constructor({ point = POINT_EMPTY, pointDestinations, pointOffers, onFormSubmit, onCloseButtonClick, onDeleteButtonClick, mode }) {
+  constructor({ point = POINT_EMPTY, pointDestinations, pointOffers, onFormSubmit, onCloseButtonClick, onDeleteButtonClick, isNew }) {
     super();
     this._setState(PointEditView.parsePointToState(point));
     this.#pointDestinations = pointDestinations;
     this.#pointOffers = pointOffers;
-    this.#modeAddFrom = mode;
+    this.#isNew = isNew;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleCloseClick = onCloseButtonClick;
     this.#handleDeleteClick = onDeleteButtonClick;
@@ -32,7 +32,7 @@ export default class PointEditView extends AbstractStatefulView {
       point: this._state,
       pointDestinations: this.#pointDestinations,
       pointOffers: this.#pointOffers,
-      modeAddForm: this.#modeAddFrom
+      modeAddForm: this.#isNew
     });
   }
 
@@ -56,7 +56,7 @@ export default class PointEditView extends AbstractStatefulView {
 
   _restoreHandlers() {
     this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
-    if (!this.#modeAddFrom) {
+    if (!this.#isNew) {
       this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#closeClickHandler);
     }
     this.element.querySelector('.event__reset-btn').addEventListener('click', this.#deleteClickHandler);
@@ -169,7 +169,6 @@ export default class PointEditView extends AbstractStatefulView {
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
     this.#handleFormSubmit(PointEditView.parseStateToPoint(this._state));
-    this.#modeAddFrom = null;
   };
 
   #closeClickHandler = (evt) => {
@@ -182,7 +181,20 @@ export default class PointEditView extends AbstractStatefulView {
     this.#handleDeleteClick(PointEditView.parseStateToPoint(this._state));
   };
 
-  static parsePointToState = (point) => ({...point});
+  static parsePointToState = (point) =>
+    ({...point,
+      isDisabled: false,
+      isSaving: false,
+      isDeleting: false
+    });
 
-  static parseStateToPoint = (state) => state;
+  static parseStateToPoint = (state) => {
+    const point = {...state};
+
+    delete point.isDisabled;
+    delete point.isSaving;
+    delete point.isDeleting;
+
+    return point;
+  };
 }

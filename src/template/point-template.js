@@ -20,14 +20,6 @@ const createPointTemplate = ({ point, pointDestination, pointOffers }) => {
   const isDiffTime = dateDiff(dateFrom, dateTo);
   const dateEnd = humanizeDate(dateTo, DATE_FORMAT.HOUR_MINUTE);
   const dateMonth = humanizeDate(dateFrom, DATE_FORMAT.MONTH_DAY);
-  const getOffers = () => {
-    const currentOffers = [];
-    for (let i = 0; i <= point.offers.length - 1; i++) {
-      const itemOffer = pointOffers.offers.find((item) => item.id === point.offers[i]);
-      currentOffers.push(itemOffer);
-    }
-    return currentOffers;
-  };
 
   const favoriteClassName = isFavorite
     ? 'event__favorite-btn event__favorite-btn--active'
@@ -53,7 +45,7 @@ const createPointTemplate = ({ point, pointDestination, pointOffers }) => {
           &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
         </p>
         <h4 class="visually-hidden">Offers:</h4>
-          ${createViewOffersList(getOffers())}
+          ${createViewOffersList(pointOffers)}
         <button class="${favoriteClassName}" type="button">
           <span class="visually-hidden">Add to favorite</span>
           <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">

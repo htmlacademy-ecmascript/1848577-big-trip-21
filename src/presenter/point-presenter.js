@@ -16,6 +16,7 @@ export default class PointPresenter {
 
   #point = null;
   #mode = Mode.DEFAULT;
+  #typeOffer = null;
 
   constructor({ tripListContainer, offersModel, destinationsModel, onDataChange, onModeChange }) {
     this.#tripListContainer = tripListContainer;
@@ -27,26 +28,29 @@ export default class PointPresenter {
 
   init(point) {
     this.#point = point;
+    this.#typeOffer = this.#offersModel.getByType(this.#point.type);
 
     const prevPointEditComponent = this.#pointEditComponent;
     const prevEventPointComponent = this.#eventPointComponent;
 
-    this.#pointEditComponent = new PointEditView({
-      point: this.#point,
-      pointDestinations: this.#destinationsModel.destinations,
-      pointOffers: this.#offersModel.offers,
-      onFormSubmit: this.#handleFormSubmit,
-      onCloseButtonClick: this.#handleCloseClick,
-      onDeleteButtonClick: this.#handleDeleteClick
-    });
+    if(this.#offersModel) {
+      this.#pointEditComponent = new PointEditView({
+        point: this.#point,
+        pointDestinations: this.#destinationsModel.destinations,
+        pointOffers: this.#offersModel.offers,
+        onFormSubmit: this.#handleFormSubmit,
+        onCloseButtonClick: this.#handleCloseClick,
+        onDeleteButtonClick: this.#handleDeleteClick
+      });
 
-    this.#eventPointComponent = new PointView({
-      point: this.#point,
-      pointDestination: this.#destinationsModel.getById(this.#point.destination),
-      pointOffers: this.#offersModel.getByType(this.#point.type),
-      onOpenClick: this.#handleOpenClick,
-      onFavoriteClick: this.#handleFavoriteClick
-    });
+      this.#eventPointComponent = new PointView({
+        point: this.#point,
+        pointDestination: this.#destinationsModel.destinations,
+        pointOffers: this.#offersModel.offers,
+        onOpenClick: this.#handleOpenClick,
+        onFavoriteClick: this.#handleFavoriteClick
+      });
+    }
 
     if (prevPointEditComponent === null || prevEventPointComponent === null) {
       render(this.#eventPointComponent, this.#tripListContainer.element);
@@ -59,6 +63,7 @@ export default class PointPresenter {
 
     if (this.#mode === Mode.EDITING) {
       replace(this.#pointEditComponent, prevPointEditComponent);
+      this.#mode = Mode.DEFAULT;
     }
 
     remove(prevEventPointComponent);
@@ -113,7 +118,53 @@ export default class PointPresenter {
       isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
       update
     );
-    this.#replaceFormToItem();
+  };
+
+  setSaving() {
+    if (this.#mode === Mode.EDITING) {
+      this.#pointEditComponent.updateElement({
+        isDisabled: true,
+        isSaving: true,
+      });
+    }
+  }
+
+  setDeleting() {
+    if (this.#mode === Mode.EDITING) {
+      this.#pointEditComponent.updateElement({
+        isDisabled: true,
+        isDeleting: true,
+      });
+    }
+  }
+
+  setAborting() {
+    if (this.#mode === Mode.DEFAULT) {
+      this.#eventPointComponent.shake();
+      return;
+    }
+
+    const resetFormState = () => {
+      this.#pointEditComponent.updateElement({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+
+    this.#pointEditComponent.shake(resetFormState);
+  }
+
+  #getOffers = () => {
+    const currentOffers = [];
+
+    if (this.#point.offers.length) {
+      for (let i = 0; i <= this.#point.offers.length - 1; i++) {
+        const itemOffer = this.#typeOffer.offers.find((item) => item.id === this.#point.offers[i]);
+        currentOffers.push(itemOffer);
+      }
+    }
+    return currentOffers;
   };
 
   #handleCloseClick = () => {

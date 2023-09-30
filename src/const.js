@@ -1,6 +1,10 @@
+import { makeid } from './utils/utils';
+
 const DESTINATIONS_COUNT = 5;
 const POINTS_COUNT = 5;
 const OFFERS_MAX_COUNT = 5;
+const END_POINT = 'https://21.objects.pages.academy/big-trip';
+const AUTHORIZATION = `Basic ${makeid(16)}`;
 
 const CITIES = [
   'Bologna',
@@ -102,6 +106,8 @@ const UpdateType = {
   PATCH: 'PATCH',
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
+  INIT: 'INIT',
+  PLUG: 'PLUG',
 };
 
 const commonConfig = {
@@ -111,4 +117,10 @@ const commonConfig = {
   allowInput: true
 };
 
-export { TYPEPOINTS, DATE_FORMAT, DEFAULT_TYPE, CITIES, DESCRIPTIONS, POINT_EMPTY, DESCRIPTION_PICTURES, Duration, FAVORITE, DESTINATIONS_COUNT, POINTS_COUNT, OFFERS_MAX_COUNT, FilterType, Mode, SortType, AvailableSortType, UserAction, UpdateType, commonConfig };
+const WebsiteAddress = {
+  POINTS: 'points',
+  OFFERS: 'offers',
+  DESTINATIONS: 'destinations',
+};
+
+export { TYPEPOINTS, DATE_FORMAT, DEFAULT_TYPE, CITIES, DESCRIPTIONS, POINT_EMPTY, DESCRIPTION_PICTURES, Duration, FAVORITE, DESTINATIONS_COUNT, POINTS_COUNT, OFFERS_MAX_COUNT, FilterType, Mode, SortType, AvailableSortType, UserAction, UpdateType, commonConfig, END_POINT, AUTHORIZATION, WebsiteAddress };
