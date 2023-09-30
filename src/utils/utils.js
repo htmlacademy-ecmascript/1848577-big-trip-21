@@ -1,22 +1,6 @@
 import dayjs from 'dayjs';
-import { getRandomInteger } from './common.js';
-import { Duration } from '../const.js';
 
-const getDate = ({next}) => {
-  let date = dayjs().subtract(getRandomInteger(0, Duration.DAY), 'day').toDate();
-  const minsGap = getRandomInteger(0, Duration.MIN);
-  const hoursGap = getRandomInteger(0, Duration.HOUR);
-  const daysGap = getRandomInteger(0, Duration.DAY);
-
-  if (next) {
-    date = dayjs()
-      .add(minsGap, 'minute')
-      .add(hoursGap, 'hour')
-      .subtract(daysGap, 'day').toDate();
-  }
-
-  return date;
-};
+const ALERT_SHOW_TIME = 5000;
 
 const humanizeDate = (date, dataFormat) => date ? dayjs(date).format(dataFormat) : '';
 
@@ -53,4 +37,39 @@ const createToUpperCase = (word) =>
 const isDatesEqual = (dateA, dateB) =>
   (dateA === null && dateB === null) || (dayjs(dateA).valueOf() === dayjs(dateB).valueOf());
 
-export { getDate, humanizeDate, dateDiff, createToUpperCase, isDatesEqual };
+const makeid = (length) => {
+  let result = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charactersLength = characters.length;
+  let counter = 0;
+  while (counter < length) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    counter += 1;
+  }
+  return result;
+};
+
+const showAlert = (message) => {
+  const alertMessage = document.createElement('div');
+  alertMessage.style.zIndex = '9999';
+  alertMessage.style.left = 0;
+  alertMessage.style.top = 0;
+  alertMessage.style.position = 'fixed';
+  alertMessage.style.paddingTop = '20px';
+  alertMessage.style.paddingBottom = '20px';
+  alertMessage.style.width = '100%';
+  alertMessage.style.backgroundColor = 'white';
+  alertMessage.style.borderRadius = '2px';
+  alertMessage.style.border = '5px solid red';
+  alertMessage.style.fontSize = '30px';
+  alertMessage.style.textAlign = 'center';
+  alertMessage.textContent = message;
+  document.body.style.overflow = 'hidden';
+  document.body.append(alertMessage);
+
+  setTimeout(() => {
+    alertMessage.remove();
+  }, ALERT_SHOW_TIME);
+};
+
+export { humanizeDate, dateDiff, createToUpperCase, isDatesEqual, makeid, showAlert };

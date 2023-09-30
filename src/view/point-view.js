@@ -5,7 +5,7 @@ import { POINT_EMPTY } from '../const.js';
 export default class PointView extends AbstractView {
   #point = null;
   #pointDestination = null;
-  #pointOffers = null;
+  #pointOffers = [];
   #handleOpenClick = null;
   #handleFavoriteClick = null;
 
