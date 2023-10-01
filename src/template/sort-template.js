@@ -1,6 +1,6 @@
-import { createToUpperCase } from '../utils/utils';
+import {createToUpperCase} from '../utils/utils';
 
-const getSortItem = ({type, isChecked, isDisabled}) => /*html*/`
+const getSortItem = ({type, isChecked, isDisabled}) => `
   <div class="trip-sort__item  trip-sort__item--${type}">
     <input
       id="sort-${type}"
@@ -22,10 +22,10 @@ const getSortItem = ({type, isChecked, isDisabled}) => /*html*/`
 `;
 
 const createSortTemplate = (sortItems) =>
-  /*html*/`
+  `
   <form class="trip-events__trip-sort  trip-sort" action="#" method="get">
     ${sortItems.map((item) => getSortItem(item)).join('')}
-</form>
+  </form>
   `;
 
-export { createSortTemplate };
+export {createSortTemplate};

@@ -1,8 +1,8 @@
-import { render, replace, remove } from '../framework/render.js';
+import {render, replace, remove} from '../framework/render.js';
 import PointEditView from '../view/point-edit-view.js';
 import PointView from '../view/point-view.js';
-import { Mode, UserAction, UpdateType } from '../const.js';
-import { isDatesEqual } from '../utils/utils.js';
+import {Mode, UserAction, UpdateType} from '../const.js';
+import {isDatesEqual} from '../utils/utils.js';
 
 export default class PointPresenter {
   #tripListContainer = null;
@@ -18,7 +18,7 @@ export default class PointPresenter {
   #mode = Mode.DEFAULT;
   #typeOffer = null;
 
-  constructor({ tripListContainer, offersModel, destinationsModel, onDataChange, onModeChange }) {
+  constructor({tripListContainer, offersModel, destinationsModel, onDataChange, onModeChange}) {
     this.#tripListContainer = tripListContainer;
     this.#offersModel = offersModel;
     this.#destinationsModel = destinationsModel;
@@ -39,8 +39,8 @@ export default class PointPresenter {
         pointDestinations: this.#destinationsModel.destinations,
         pointOffers: this.#offersModel.offers,
         onFormSubmit: this.#handleFormSubmit,
-        onCloseButtonClick: this.#handleCloseClick,
-        onDeleteButtonClick: this.#handleDeleteClick
+        onCloseClick: this.#handleCloseClick,
+        onDeleteClick: this.#handleDeleteClick
       });
 
       this.#eventPointComponent = new PointView({
@@ -111,7 +111,8 @@ export default class PointPresenter {
   #handleFormSubmit = (update) => {
     const isMinorUpdate =
       !isDatesEqual(this.#point.dateFrom, update.dateFrom) ||
-      !isDatesEqual(this.#point.dateTo, update.dateTo);
+      !isDatesEqual(this.#point.dateTo, update.dateTo) ||
+      !isDatesEqual(this.#point.basePrice, update.basePrice);
 
     this.#handleDataChange(
       UserAction.UPDATE_POINT,

@@ -1,12 +1,12 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { createFilterTemplate } from '../template/filter-template.js';
+import {createFilterTemplate} from '../template/filter-template.js';
 
 export default class FilterView extends AbstractView {
   #filters = [];
   #currentFilter = null;
   #handleFilterTypeChange = null;
 
-  constructor({ filters, currentFilterType, onFilterTypeChange }) {
+  constructor({filters, currentFilterType, onFilterTypeChange}) {
     super();
     this.#filters = filters;
     this.#currentFilter = currentFilterType;

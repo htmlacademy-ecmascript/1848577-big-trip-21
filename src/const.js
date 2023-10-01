@@ -1,4 +1,4 @@
-import { makeid } from './utils/utils';
+import {makeid} from './utils/utils';
 
 const DESTINATIONS_COUNT = 5;
 const POINTS_COUNT = 5;
@@ -123,4 +123,4 @@ const WebsiteAddress = {
   DESTINATIONS: 'destinations',
 };
 
-export { TYPEPOINTS, DATE_FORMAT, DEFAULT_TYPE, CITIES, DESCRIPTIONS, POINT_EMPTY, DESCRIPTION_PICTURES, Duration, FAVORITE, DESTINATIONS_COUNT, POINTS_COUNT, OFFERS_MAX_COUNT, FilterType, Mode, SortType, AvailableSortType, UserAction, UpdateType, commonConfig, END_POINT, AUTHORIZATION, WebsiteAddress };
+export {TYPEPOINTS, DATE_FORMAT, DEFAULT_TYPE, CITIES, DESCRIPTIONS, POINT_EMPTY, DESCRIPTION_PICTURES, Duration, FAVORITE, DESTINATIONS_COUNT, POINTS_COUNT, OFFERS_MAX_COUNT, FilterType, Mode, SortType, AvailableSortType, UserAction, UpdateType, commonConfig, END_POINT, AUTHORIZATION, WebsiteAddress};

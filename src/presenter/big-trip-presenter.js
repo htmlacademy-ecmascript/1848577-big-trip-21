@@ -1,4 +1,4 @@
-import { render, remove, RenderPosition } from '../framework/render.js';
+import {render, remove, RenderPosition} from '../framework/render.js';
 import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 import TripListView from '../view/trip-list-view.js';
 import SortView from '../view/sort-view.js';
@@ -6,9 +6,9 @@ import PointListAbsenceView from '../view/point-list-absence-view.js';
 import LoadingView from '../view/loading-view.js';
 import PointPresenter from './point-presenter.js';
 import NewPointPresenter from './new-point-presenter.js';
-import { SortType, AvailableSortType, FilterType, UserAction, UpdateType } from '../const.js';
-import { sort } from '../utils/sort.js';
-import { filter } from '../utils//filter.js';
+import {SortType, AvailableSortType, FilterType, UserAction, UpdateType} from '../const.js';
+import {sort} from '../utils/sort.js';
+import {filter} from '../utils//filter.js';
 
 const TimeLimit = {
   LOWER_LIMIT: 350,
@@ -22,6 +22,7 @@ export default class BigTripPresenter {
   #offersModel = null;
   #destinationsModel = null;
   #filterModel = null;
+  #newEventButtonModel = null;
 
   #tripListComponent = new TripListView();
   #loadingComponent = new LoadingView();
@@ -34,26 +35,29 @@ export default class BigTripPresenter {
   #currentSortType = SortType.DAY;
   #filterType = FilterType.EVERYTHING;
   #isLoading = true;
+  #isCreating = false;
   #uiBlocker = new UiBlocker({
     lowerLimit: TimeLimit.LOWER_LIMIT,
     upperLimit: TimeLimit.UPPER_LIMIT
   });
 
-  constructor({pointContainer, pointsModel, offersModel, destinationsModel, filterModel, onNewPointDestroy}) {
+  constructor({pointContainer, pointsModel, offersModel, destinationsModel, filterModel, newEventButtonModel}) {
     this.#pointContainer = pointContainer;
     this.#pointsModel = pointsModel;
     this.#offersModel = offersModel;
     this.#destinationsModel = destinationsModel;
     this.#filterModel = filterModel;
+    this.#newEventButtonModel = newEventButtonModel;
 
     this.#newPointPresenter = new NewPointPresenter({
       pointDestinations: destinationsModel,
       pointOffers: offersModel,
       pointListContainer: this.#tripListComponent,
       onDataChange: this.#handleViewAction,
-      onDestroy: onNewPointDestroy
+      onDestroy: this.#newPointDestroyHandler
     });
 
+    this.#newEventButtonModel.addObserver(this.#handleModelNewEventButton);
     this.#pointsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
   }
@@ -63,21 +67,25 @@ export default class BigTripPresenter {
     const points = this.#pointsModel.points;
     const filteredPoints = filter[this.#filterType](points);
 
-    if (this.#currentSortType) {
-      return sort[this.#currentSortType](filteredPoints);
-    }
-    return filteredPoints;
+    return sort[this.#currentSortType](filteredPoints);
   }
 
   init() {
     this.#renderBigTrip();
   }
 
-  createPoint() {
+  #createPoint () {
     this.#currentSortType = SortType.DAY;
     this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
     this.#newPointPresenter.init();
   }
+
+  #handleModelNewEventButton = (creating) => {
+    if (creating) {
+      this.#isCreating = true;
+      this.#createPoint();
+    }
+  };
 
   #renderBigTrip() {
     if (this.#isLoading) {
@@ -85,11 +93,15 @@ export default class BigTripPresenter {
       return;
     }
 
+    if (this.points.length === 0 && !this.#isCreating) {
+      this.#renderPointListAbsence();
+      return;
+    }
+
     this.#renderSort();
     render(this.#tripListComponent, this.#pointContainer);
-    if (this.points.length === 0) {
-      this.#renderPointListAbsence();
-    } else {
+
+    if (this.points.length) {
       this.#renderPointList();
     }
   }
@@ -158,6 +170,16 @@ export default class BigTripPresenter {
       this.#renderPoint(point);
     });
   }
+
+  #newPointDestroyHandler = () => {
+    this.#isCreating = false;
+    this.#newEventButtonModel.startCreating(false);
+
+    if (this.points.length === 0) {
+      this.#clearBigTrip();
+      this.#renderBigTrip();
+    }
+  };
 
   #clearBigTrip({resetSortType = false} = {}) {
     this.#newPointPresenter.destroy();

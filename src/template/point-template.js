@@ -1,5 +1,5 @@
-import { DATE_FORMAT } from '../const.js';
-import { humanizeDate, dateDiff } from '../utils/utils.js';
+import {DATE_FORMAT} from '../const.js';
+import {humanizeDate, dateDiff} from '../utils/utils.js';
 
 const createViewOffersList = (offers) =>
   `<ul class="event__selected-offers">
@@ -13,8 +13,8 @@ const createViewOffersList = (offers) =>
     : ''}
   </ul>`;
 
-const createPointTemplate = ({ point, pointDestination, pointOffers }) => {
-  const { dateFrom, dateTo, type, basePrice, isFavorite } = point;
+const createPointTemplate = ({point, pointDestination, pointOffers}) => {
+  const {dateFrom, dateTo, type, basePrice, isFavorite} = point;
 
   const dateStart = humanizeDate(dateFrom, DATE_FORMAT.HOUR_MINUTE);
   const isDiffTime = dateDiff(dateFrom, dateTo);
@@ -25,8 +25,8 @@ const createPointTemplate = ({ point, pointDestination, pointOffers }) => {
     ? 'event__favorite-btn event__favorite-btn--active'
     : 'event__favorite-btn';
 
-  return (
-    `<li class="trip-events__item">
+  return `
+    <li class="trip-events__item">
       <div class="event">
         <time class="event__date" datetime="${dateFrom}">${dateMonth}</time>
         <div class="event__type">
@@ -56,8 +56,8 @@ const createPointTemplate = ({ point, pointDestination, pointOffers }) => {
           <span class="visually-hidden">Open event</span>
         </button>
       </div>
-    </li>`
-  );
+    </li>
+  `;
 };
 
-export { createPointTemplate };
+export {createPointTemplate};
