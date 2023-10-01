@@ -1,8 +1,8 @@
 const createFilterItemTemplate = (filter, currentFilterType) => {
   const {type, count} = filter;
 
-  return (
-    `<div class="trip-filters__filter">
+  return `
+    <div class="trip-filters__filter">
       <input
         id="filter-${type}"
         class="trip-filters__filter-input  visually-hidden"
@@ -13,8 +13,8 @@ const createFilterItemTemplate = (filter, currentFilterType) => {
         ${count === 0 ? 'disabled' : ''}
       >
         <label class="trip-filters__filter-label" for="filter-${type}">${type}</label>
-    </div>`
-  );
+    </div>
+    `;
 };
 
 const createFilterTemplate = (filterItems, currentFilterType) => {
@@ -29,4 +29,4 @@ const createFilterTemplate = (filterItems, currentFilterType) => {
   );
 };
 
-export { createFilterTemplate };
+export {createFilterTemplate};

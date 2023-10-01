@@ -72,4 +72,4 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-export { humanizeDate, dateDiff, createToUpperCase, isDatesEqual, makeid, showAlert };
+export {humanizeDate, dateDiff, createToUpperCase, isDatesEqual, makeid, showAlert};

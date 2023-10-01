@@ -1,6 +1,8 @@
-const createLoadingTemplate = () =>
-  `<p class="board__no-tasks">
-    Loading...
-  </p>`;
+const createLoadingTemplate = () => `
+  <section class="trip-events">
+    <h2 class="visually-hidden">Trip events</h2>
+    <p class="trip-events__msg">Loading...</p>
+  </section>
+`;
 
-export { createLoadingTemplate };
+export {createLoadingTemplate};

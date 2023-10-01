@@ -1,6 +1,6 @@
 import he from 'he';
-import { humanizeDate, createToUpperCase } from '../utils/utils.js';
-import { DATE_FORMAT, END_POINT } from '../const.js';
+import {humanizeDate, createToUpperCase} from '../utils/utils.js';
+import {DATE_FORMAT, END_POINT} from '../const.js';
 
 const createOfferSelectorTemplate = (offers, point, isDisabled) =>
   offers.map((item) => {
@@ -54,7 +54,8 @@ const createDestinationElementTemplate = (destination) => {
           ${createElementPictures(destination.pictures)}
         </div>`
     : ''}
-    </section>`;
+    </section>
+  `;
 
   return destinationElement;
 };
@@ -65,7 +66,8 @@ const createDatalistElement = (destinations) => {
   return `
     <datalist id="destination-list-1">
       ${datalistElement}
-    </datalist>`;
+    </datalist>
+  `;
 };
 
 const createTypesListTemplate = (offerTypes, type, isDisabled) => {
@@ -83,22 +85,22 @@ const createTypesListTemplate = (offerTypes, type, isDisabled) => {
         <label class="event__type-label  event__type-label--${item.type}" for="event-type-${item.type}-1">${createToUpperCase(item.type)}</label>
       </div>`)).join('');
 
-  return (
-    `<div class="event__type-wrapper">
-        <label class="event__type  event__type-btn" for="event-type-toggle-1">
-          <span class="visually-hidden">Choose event type</span>
-          <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon">
-        </label>
-        <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox" ${isDisabled ? 'disabled' : ''}>
-        <div class="event__type-list">
-          <fieldset class="event__type-group">
-            <legend class="visually-hidden">Event type</legend>
-              ${offerType}
-        </div>
-     </div>`);
+  return `
+    <div class="event__type-wrapper">
+      <label class="event__type  event__type-btn" for="event-type-toggle-1">
+        <span class="visually-hidden">Choose event type</span>
+        <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon">
+      </label>
+      <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox" ${isDisabled ? 'disabled' : ''}>
+      <div class="event__type-list">
+        <fieldset class="event__type-group">
+        <legend class="visually-hidden">Event type</legend>
+          ${offerType}
+      </div>
+     </div>`;
 };
 
-const createPointEditTemplate = ({ point, pointDestinations, pointOffers, isNew }) => {
+const createPointEditTemplate = ({point, pointDestinations, pointOffers, isNew}) => {
   const { dateFrom, dateTo, type, basePrice, destination, isDisabled, isSaving, isDeleting } = point;
   const offersByType = pointOffers.find((item) => item.type === type).offers;
   const currentDestination = pointDestinations.find((item) => item.id === destination);
@@ -116,8 +118,8 @@ const createPointEditTemplate = ({ point, pointDestinations, pointOffers, isNew 
     return isDelete;
   };
 
-  return (
-    `<li class="trip-events__item">
+  return `
+    <li class="trip-events__item">
     <form class="event event--edit" action="${END_POINT}" method="post">
       <header class="event__header">
       ${createTypesListTemplate(pointOffers, type, isDisabled)}
@@ -148,11 +150,11 @@ const createPointEditTemplate = ({ point, pointDestinations, pointOffers, isNew 
           <button class="event__reset-btn" type="reset" ${isDisabled ? 'disabled' : ''}>
             ${getCurrentButton()}
           </button>
-        ${(isNew) ? '' :
-      `<button class="event__rollup-btn" type="button">
+          ${(isNew) ? '' : `
+          <button class="event__rollup-btn" type="button">
             <span class="visually-hidden">Open event</span>
-          </button>`
-    }
+          </button>
+          `}
       </header>
       <section class="event__details">
         ${createOffersElementTemplate(offersByType, point, isDisabled)}
@@ -160,8 +162,8 @@ const createPointEditTemplate = ({ point, pointDestinations, pointOffers, isNew 
         </section>
       </section>
     </form>
-  </li>`
-  );
+  </li>
+`;
 };
 
-export { createPointEditTemplate };
+export {createPointEditTemplate};

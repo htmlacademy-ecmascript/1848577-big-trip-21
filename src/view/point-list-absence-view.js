@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { createPointListAbsenceTemplate } from '../template/point-list-absence-template.js';
+import {createPointListAbsenceTemplate} from '../template/point-list-absence-template.js';
 
 export default class PointListAbsenceView extends AbstractView {
   #filterType = null;

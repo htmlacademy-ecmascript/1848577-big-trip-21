@@ -1,4 +1,4 @@
-import { FilterType } from '../const';
+import {FilterType} from '../const';
 
 const PointsListAbsenceTextVariations = {
   [FilterType.EVERYTHING]: 'Click New Event to create your first point',
@@ -10,11 +10,11 @@ const PointsListAbsenceTextVariations = {
 const createPointListAbsenceTemplate = (filterType) => {
   const pointListAbsenceText = PointsListAbsenceTextVariations[filterType];
 
-  return /*html*/`
+  return `
   <div class="point-list-absence">
     <p>${pointListAbsenceText}<p>
   </div>
   `;
 };
 
-export { createPointListAbsenceTemplate };
+export {createPointListAbsenceTemplate};

@@ -1,5 +1,5 @@
-const createTripListTemplate = () =>/*html*/`
+const createTripListTemplate = () => `
 <ul class="trip-events__list"></ul>
 `;
 
-export { createTripListTemplate };
+export {createTripListTemplate};

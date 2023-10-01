@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { SortType } from '../const';
+import {SortType} from '../const';
 
 const getPointsDateDifference = (pointA, pointB) => dayjs(pointA.dateFrom).diff(dayjs(pointB.dateFrom));
 
@@ -24,4 +24,4 @@ const sort = {
   }
 };
 
-export { sort };
+export {sort};
