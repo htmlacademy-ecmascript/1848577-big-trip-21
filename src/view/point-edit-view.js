@@ -18,7 +18,7 @@ export default class PointEditView extends AbstractStatefulView {
 
   constructor({point = POINT_EMPTY, pointDestinations, pointOffers, onFormSubmit, onCloseClick, onDeleteClick, isNew, onResetClick}) {
     super();
-    this._setState(PointEditView.parsePointToState(point));
+    this._setState(PointEditView.parsePointToState({point}));
     this.#pointDestinations = pointDestinations;
     this.#pointOffers = pointOffers;
     this.#isNew = isNew;
@@ -136,9 +136,9 @@ export default class PointEditView extends AbstractStatefulView {
   #offerChangeHandler = (evt) => {
     evt.preventDefault();
     const checkedBoxes = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
-    this._setState(
-      {offers: checkedBoxes.map((item) => item.id)}
-    );
+    this._setState({
+      offers: checkedBoxes.map((item) => item.dataset.offerId)
+    });
   };
 
   #inputDestinationChangeHandler = (evt) => {
@@ -194,7 +194,7 @@ export default class PointEditView extends AbstractStatefulView {
     this.#handleResetClick();
   };
 
-  static parsePointToState = (point) =>
+  static parsePointToState = ({point}) =>
     ({...point,
       isDisabled: false,
       isSaving: false,

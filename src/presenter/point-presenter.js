@@ -46,7 +46,7 @@ export default class PointPresenter {
       this.#eventPointComponent = new PointView({
         point: this.#point,
         pointDestination: this.#destinationsModel.destinations,
-        pointOffers: this.#offersModel.offers,
+        pointOffers: this.#getOffers(),
         onOpenClick: this.#handleOpenClick,
         onFavoriteClick: this.#handleFavoriteClick
       });
@@ -90,7 +90,6 @@ export default class PointPresenter {
     if (evt.key === 'Escape') {
       evt.preventDefault();
       this.#resetPoint();
-      this.#replaceFormToItem();
       document.removeEventListener('keydown', this.#escKeyDownHandler);
     }
   };
@@ -157,15 +156,16 @@ export default class PointPresenter {
   }
 
   #getOffers = () => {
-    const currentOffers = [];
+    const offers = [];
 
     if (this.#point.offers.length) {
-      for (let i = 0; i <= this.#point.offers.length - 1; i++) {
-        const itemOffer = this.#typeOffer.offers.find((item) => item.id === this.#point.offers[i]);
-        currentOffers.push(itemOffer);
-      }
+      this.#point.offers.forEach((currentOffer) => {
+        const itemOffer = this.#typeOffer.offers.find((item) => item.id === currentOffer);
+        offers.push(itemOffer);
+      });
     }
-    return currentOffers;
+
+    return offers;
   };
 
   #handleCloseClick = () => {
