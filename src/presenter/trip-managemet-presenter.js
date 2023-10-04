@@ -7,7 +7,7 @@ import {SortType} from '../const.js';
 import {sort} from '../utils/sort.js';
 import {getTripTitle, getTripDuration, getUserPrice} from '../utils/trip-management.js';
 
-export default class TripInfoPresenter {
+export default class TripManagementPresenter {
   #pointsModel = null;
   #filterModel = null;
   #destinationsModel = null;
@@ -45,7 +45,7 @@ export default class TripInfoPresenter {
     this.#renderTripInfoPresenter();
   }
 
-  handleNewEventButtonClick = () => {
+  #handleNewEventButtonClick = () => {
     this.#newEventButtonModel.startCreating(true);
     this.#newEventButtonComponent.element.disabled = true;
   };
@@ -57,7 +57,7 @@ export default class TripInfoPresenter {
 
   #renderNewEventButton() {
     this.#newEventButtonComponent = new NewEventButtonView({
-      onButtonClick: this.handleNewEventButtonClick,
+      onButtonClick: this.#handleNewEventButtonClick,
     });
 
     render(this.#newEventButtonComponent, this.#tripMainElement);

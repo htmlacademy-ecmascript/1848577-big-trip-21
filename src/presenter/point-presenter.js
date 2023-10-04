@@ -45,7 +45,7 @@ export default class PointPresenter {
 
       this.#eventPointComponent = new PointView({
         point: this.#point,
-        pointDestination: this.#destinationsModel.destinations,
+        pointDestination: this.#destinationsModel.getById(this.#point.destination),
         pointOffers: this.#getOffers(),
         onOpenClick: this.#handleOpenClick,
         onFavoriteClick: this.#handleFavoriteClick
@@ -62,7 +62,7 @@ export default class PointPresenter {
     }
 
     if (this.#mode === Mode.EDITING) {
-      replace(this.#pointEditComponent, prevPointEditComponent);
+      replace(this.#eventPointComponent, prevPointEditComponent);
       this.#mode = Mode.DEFAULT;
     }
 
