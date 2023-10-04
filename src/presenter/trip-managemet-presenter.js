@@ -1,24 +1,26 @@
 import {render, RenderPosition, remove} from '../framework/render';
 import InfoView from '../view/info-view.js';
-import FilterPresenter from '../presenter/filter-presenter.js';
+import FilterPresenter from './filter-presenter';
 import NewEventButtonView from '../view/new-event-button-view.js';
 import {UpdateType} from '../const.js';
 import {SortType} from '../const.js';
 import {sort} from '../utils/sort.js';
+import {getTripTitle, getTripDuration, getUserPrice} from '../utils/trip-management.js';
 
 export default class TripManagementPresenter {
   #pointsModel = null;
   #filterModel = null;
-  #tripMainElement = null;
-  #tripEventsFiltersElement = null;
   #destinationsModel = null;
   #newEventButtonModel = null;
   #offersModel = null;
+
   #infoComponent = null;
   #newEventButtonComponent = null;
-  #isSmallPoints = false;
 
-  constructor({pointsModel, filterModel, tripEventsFiltersElement, tripMainElement, destinationsModel, offersModel, newEventButtonModel}) {
+  #tripMainElement = null;
+  #tripFilterElement = null;
+
+  constructor({pointsModel, filterModel, tripFilterElement, tripMainElement, destinationsModel, offersModel, newEventButtonModel}) {
     this.#pointsModel = pointsModel;
     this.#filterModel = filterModel;
     this.#destinationsModel = destinationsModel;
@@ -26,7 +28,7 @@ export default class TripManagementPresenter {
     this.#offersModel = offersModel;
 
     this.#tripMainElement = tripMainElement;
-    this.#tripEventsFiltersElement = tripEventsFiltersElement;
+    this.#tripFilterElement = tripFilterElement;
 
     this.#newEventButtonModel.addObserver(this.#handleModelNewEventButton);
     this.#pointsModel.addObserver(this.#handleModelEvent);
@@ -40,17 +42,22 @@ export default class TripManagementPresenter {
   }
 
   init() {
-    this.#renderTripManagement();
+    this.#renderTripInfoPresenter();
   }
 
-  #renderTripManagement() {
+  #handleNewEventButtonClick = () => {
+    this.#newEventButtonModel.startCreating(true);
+    this.#newEventButtonComponent.element.disabled = true;
+  };
+
+  #renderTripInfoPresenter() {
     this.#renderFilter();
     this.#renderNewEventButton();
   }
 
   #renderNewEventButton() {
     this.#newEventButtonComponent = new NewEventButtonView({
-      onButtonClick: this.handleNewEventButtonClick,
+      onButtonClick: this.#handleNewEventButtonClick,
     });
 
     render(this.#newEventButtonComponent, this.#tripMainElement);
@@ -62,26 +69,9 @@ export default class TripManagementPresenter {
     }
   };
 
-  handleNewEventButtonClick = () => {
-    this.#newEventButtonModel.startCreating(true);
-    this.#newEventButtonComponent.element.disabled = true;
-  };
-
-  #handleModelEvent = (updateType) => {
-    switch (updateType) {
-      case UpdateType.INIT:
-        this.#renderInfo();
-        break;
-      default:
-        remove(this.#infoComponent);
-        this.#renderInfo();
-        break;
-    }
-  };
-
   #renderFilter() {
     const filterPresenter = new FilterPresenter({
-      filterContainer: this.#tripEventsFiltersElement,
+      filterContainer: this.#tripFilterElement,
       filterModel: this.#filterModel,
       pointsModel: this.#pointsModel,
     });
@@ -89,73 +79,24 @@ export default class TripManagementPresenter {
     filterPresenter.init();
   }
 
+  #handleModelEvent = (updateType) => {
+    if (updateType === UpdateType.INIT) {
+      this.#renderInfo();
+    }
+
+    remove(this.#infoComponent);
+    this.#renderInfo();
+  };
+
   #renderInfo() {
-    this.#infoComponent = new InfoView({
-      travelPoints: this.#getTravelPoints(),
-      isSmallPoints: this.#isSmallPoints,
-      userPrice: this.#getUserPrice()
-    });
-    render(this.#infoComponent, this.#tripMainElement, RenderPosition.AFTERBEGIN);
-  }
-
-  #getUserPrice () {
     if (this.points.length) {
-      const sum = this.points.reduce((acc, item) => acc + item.basePrice, 0);
+      this.#infoComponent = new InfoView({
+        tripTitle: getTripTitle(this.points, this.#destinationsModel),
+        tripDuration: getTripDuration(this.points),
+        userPrice: getUserPrice(this.points, this.#offersModel)
+      });
 
-      const offers = [];
-
-      for (let i = 0; i <= this.points.length - 1; i++) {
-        if (this.points[i].offers.length) {
-          for(let j = 0; j <= this.points[i].offers.length - 1; j++) {
-            const typeOffer = this.#offersModel.getByType(this.points[i].type);
-            const itemOffer = typeOffer.offers.find((item) => item.id === this.points[i].offers[j]);
-            offers.push(itemOffer);
-          }
-        }
-      }
-
-      const userPrice = offers.reduce((acc, item) => acc + item.price, sum);
-
-      return userPrice;
+      render(this.#infoComponent, this.#tripMainElement, RenderPosition.AFTERBEGIN);
     }
-  }
-
-  #getTravelPoints () {
-    const points = [];
-    const destinations = [];
-
-    const infoPoints = {
-      points: points,
-      destinations: destinations,
-    };
-
-    for(let i = 0; i <= this.points.length - 1; i++) {
-      const currentPoint = this.points[i];
-      if (i === 0) {
-        const currentDestination = this.#destinationsModel.getById(currentPoint.destination);
-        points.push(currentPoint);
-        destinations.push(currentDestination);
-      }
-
-      if (this.points.length <= 3) {
-        this.#isSmallPoints = true;
-      } else {
-        this.#isSmallPoints = false;
-      }
-
-      if (i === 1 && i !== this.points.length - 1) {
-        const currentDestination = this.#destinationsModel.getById(currentPoint.destination);
-        points.push(currentPoint);
-        destinations.push(currentDestination);
-      }
-
-      if (i === this.points.length - 1 && i !== 0) {
-        const currentDestination = this.#destinationsModel.getById(currentPoint.destination);
-        points.push(currentPoint);
-        destinations.push(currentDestination);
-      }
-    }
-
-    return infoPoints;
   }
 }

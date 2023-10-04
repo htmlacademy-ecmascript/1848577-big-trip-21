@@ -18,7 +18,7 @@ export default class PointEditView extends AbstractStatefulView {
 
   constructor({point = POINT_EMPTY, pointDestinations, pointOffers, onFormSubmit, onCloseClick, onDeleteClick, isNew, onResetClick}) {
     super();
-    this._setState(PointEditView.parsePointToState(point));
+    this._setState(PointEditView.parsePointToState({point}));
     this.#pointDestinations = pointDestinations;
     this.#pointOffers = pointOffers;
     this.#isNew = isNew;
@@ -34,7 +34,7 @@ export default class PointEditView extends AbstractStatefulView {
       point: this._state,
       pointDestinations: this.#pointDestinations,
       pointOffers: this.#pointOffers,
-      modeAddForm: this.#isNew
+      isNew: this.#isNew
     });
   }
 
@@ -53,7 +53,7 @@ export default class PointEditView extends AbstractStatefulView {
   }
 
   reset(point) {
-    this.updateElement(PointEditView.parsePointToState(point));
+    this.updateElement(PointEditView.parsePointToState({point}));
   }
 
   _restoreHandlers() {
@@ -85,31 +85,28 @@ export default class PointEditView extends AbstractStatefulView {
   }
 
   #setDatepicker() {
-    if (this._state.dateFrom && this._state.dateTo) {
+    this.#datepickerFrom = flatpickr(
+      this.element.querySelector('#event-start-time-1'),
+      {
+        ...commonConfig,
+        defaultDate: this._state.dateFrom,
+        locale: {
+          firstDayOfWeek: 1,
+        },
+        maxDate: this._state.dateTo,
+        onClose: this.#dateFromCloseHandler
+      }
+    );
 
-      this.#datepickerFrom = flatpickr(
-        this.element.querySelector('#event-start-time-1'),
-        {
-          ...commonConfig,
-          defaultDate: this._state.dateFrom,
-          locale: {
-            firstDayOfWeek: 1,
-          },
-          maxDate: this._state.dateTo,
-          onClose: this.#dateFromCloseHandler
-        }
-      );
-
-      this.#datepickerTo = flatpickr(
-        this.element.querySelector('#event-end-time-1'),
-        {
-          ...commonConfig,
-          defaultDate: this._state.dateTo,
-          minDate: this._state.dateFrom,
-          onClose: this.#dateToCloseHandler,
-        }
-      );
-    }
+    this.#datepickerTo = flatpickr(
+      this.element.querySelector('#event-end-time-1'),
+      {
+        ...commonConfig,
+        defaultDate: this._state.dateTo,
+        minDate: this._state.dateFrom,
+        onClose: this.#dateToCloseHandler,
+      }
+    );
   }
 
   #dateFromCloseHandler = ([userDate]) => {
@@ -136,9 +133,9 @@ export default class PointEditView extends AbstractStatefulView {
   #offerChangeHandler = (evt) => {
     evt.preventDefault();
     const checkedBoxes = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
-    this._setState(
-      {offers: checkedBoxes.map((item) => item.id)}
-    );
+    this._setState({
+      offers: checkedBoxes.map((item) => item.dataset.offerId)
+    });
   };
 
   #inputDestinationChangeHandler = (evt) => {
@@ -194,7 +191,7 @@ export default class PointEditView extends AbstractStatefulView {
     this.#handleResetClick();
   };
 
-  static parsePointToState = (point) =>
+  static parsePointToState = ({point}) =>
     ({...point,
       isDisabled: false,
       isSaving: false,

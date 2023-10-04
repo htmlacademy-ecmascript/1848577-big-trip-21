@@ -11,9 +11,9 @@ const createPointListAbsenceTemplate = (filterType) => {
   const pointListAbsenceText = PointsListAbsenceTextVariations[filterType];
 
   return `
-  <div class="point-list-absence">
-    <p>${pointListAbsenceText}<p>
-  </div>
+  <p class="trip-events__msg">
+    ${pointListAbsenceText}
+  </p>
   `;
 };
 

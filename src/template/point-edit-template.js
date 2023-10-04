@@ -1,6 +1,6 @@
 import he from 'he';
 import {humanizeDate, createToUpperCase} from '../utils/utils.js';
-import {DATE_FORMAT, END_POINT} from '../const.js';
+import {DateFormat, END_POINT} from '../const.js';
 
 const createOfferSelectorTemplate = (offers, point, isDisabled) =>
   offers.map((item) => {
@@ -8,7 +8,7 @@ const createOfferSelectorTemplate = (offers, point, isDisabled) =>
 
     return (
       `<div class="event__offer-selector">
-    <input class="event__offer-checkbox  visually-hidden" id="${item.id}" type="checkbox" name="${item.id}" ${isChecked ? 'checked' : ''} ${isDisabled ? 'disabled' : ''}>
+    <input class="event__offer-checkbox  visually-hidden" id="${item.id}" type="checkbox" name="${item.id}" data-offer-id="${item.id}" ${isChecked ? 'checked' : ''} ${isDisabled ? 'disabled' : ''}>
     <label class="event__offer-label" for="${item.id}">
       <span class="event__offer-title">${item.title}</span>
       &plus;&euro;&nbsp;
@@ -132,17 +132,17 @@ const createPointEditTemplate = ({point, pointDestinations, pointOffers, isNew})
         </div>
         <div class="event__field-group  event__field-group--time">
           <label class="visually-hidden" for="event-start-time-1">From</label>
-          <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${he.encode(humanizeDate(dateFrom, DATE_FORMAT.FULL_DATA))}" required ${isDisabled ? 'disabled' : ''}>
+          <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${he.encode(humanizeDate(dateFrom, DateFormat.FULL_DATA))}" required ${isDisabled ? 'disabled' : ''}>
           &mdash;
           <label class="visually-hidden" for="event-end-time-1">To</label>
-          <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${humanizeDate(dateTo, DATE_FORMAT.FULL_DATA)}" required ${isDisabled ? 'disabled' : ''}>
+          <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${humanizeDate(dateTo, DateFormat.FULL_DATA)}" required ${isDisabled ? 'disabled' : ''}>
         </div>
         <div class="event__field-group  event__field-group--price">
           <label class="event__label" for="event-price-1">
             <span class="visually-hidden">Price</span>
             &euro;
           </label>
-          <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${basePrice}" min="1" autocomplete="off" required ${isDisabled ? 'disabled' : ''}>
+          <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${he.encode(String(basePrice))}" min="1" autocomplete="off" required ${isDisabled ? 'disabled' : ''}>
         </div>
         <button class="event__save-btn  btn  btn--blue" type="submit" ${isDisabled ? 'disabled' : ''}>
             ${isSaving ? 'Saving...' : 'Save'}

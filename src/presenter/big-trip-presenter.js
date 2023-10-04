@@ -1,9 +1,8 @@
-import {render, remove, RenderPosition} from '../framework/render.js';
+import {render, remove} from '../framework/render.js';
 import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 import TripListView from '../view/trip-list-view.js';
 import SortView from '../view/sort-view.js';
 import PointListAbsenceView from '../view/point-list-absence-view.js';
-import LoadingView from '../view/loading-view.js';
 import PointPresenter from './point-presenter.js';
 import NewPointPresenter from './new-point-presenter.js';
 import {SortType, AvailableSortType, FilterType, UserAction, UpdateType} from '../const.js';
@@ -25,12 +24,12 @@ export default class BigTripPresenter {
   #newEventButtonModel = null;
 
   #tripListComponent = new TripListView();
-  #loadingComponent = new LoadingView();
   #sortComponent = null;
   #pointListAbsenceComponent = null;
 
   #newPointPresenter = null;
   #pointPresenters = new Map();
+  #loadingPresenter = null;
 
   #currentSortType = SortType.DAY;
   #filterType = FilterType.EVERYTHING;
@@ -41,20 +40,21 @@ export default class BigTripPresenter {
     upperLimit: TimeLimit.UPPER_LIMIT
   });
 
-  constructor({pointContainer, pointsModel, offersModel, destinationsModel, filterModel, newEventButtonModel}) {
+  constructor({pointContainer, pointsModel, offersModel, destinationsModel, filterModel, newEventButtonModel, loadingPresenter}) {
     this.#pointContainer = pointContainer;
     this.#pointsModel = pointsModel;
     this.#offersModel = offersModel;
     this.#destinationsModel = destinationsModel;
     this.#filterModel = filterModel;
     this.#newEventButtonModel = newEventButtonModel;
+    this.#loadingPresenter = loadingPresenter;
 
     this.#newPointPresenter = new NewPointPresenter({
       pointDestinations: destinationsModel,
       pointOffers: offersModel,
       pointListContainer: this.#tripListComponent,
       onDataChange: this.#handleViewAction,
-      onDestroy: this.#newPointDestroyHandler
+      onNewPointDestroy: this.#handlerNewPointDestroy
     });
 
     this.#newEventButtonModel.addObserver(this.#handleModelNewEventButton);
@@ -89,7 +89,7 @@ export default class BigTripPresenter {
 
   #renderBigTrip() {
     if (this.#isLoading) {
-      this.#renderLoading();
+      this.#loadingPresenter.init({isError: false});
       return;
     }
 
@@ -171,7 +171,7 @@ export default class BigTripPresenter {
     });
   }
 
-  #newPointDestroyHandler = () => {
+  #handlerNewPointDestroy = () => {
     this.#isCreating = false;
     this.#newEventButtonModel.startCreating(false);
 
@@ -209,7 +209,7 @@ export default class BigTripPresenter {
         break;
       case UpdateType.INIT:
         this.#isLoading = false;
-        remove(this.#loadingComponent);
+        this.#loadingPresenter.destroyComponent();
         this.#renderBigTrip();
         break;
     }
@@ -229,10 +229,6 @@ export default class BigTripPresenter {
     this.#newPointPresenter.destroy();
     this.#pointPresenters.forEach((presenter) => presenter.resetView());
   };
-
-  #renderLoading() {
-    render(this.#loadingComponent, this.#pointContainer, RenderPosition.AFTERBEGIN);
-  }
 
   #renderPoint(point) {
     const pointPresenter = new PointPresenter({

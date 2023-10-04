@@ -1,10 +1,8 @@
-import {makeid} from './utils/utils';
-
 const DESTINATIONS_COUNT = 5;
 const POINTS_COUNT = 5;
 const OFFERS_MAX_COUNT = 5;
 const END_POINT = 'https://21.objects.pages.academy/big-trip';
-const AUTHORIZATION = `Basic ${makeid(16)}`;
+const AUTHORIZATION = 'Basic Col552YMXy53POYI';
 
 const CITIES = [
   'Bologna',
@@ -39,10 +37,12 @@ const TYPEPOINTS = [
   'restaurant',
 ];
 
-const DATE_FORMAT = {
+const DateFormat = {
   FULL_DATA: 'DD/MM/YY HH:mm',
   HOUR_MINUTE: 'HH:mm',
   MONTH_DAY: 'MMM DD',
+  DAY_MONTH: 'DD MMM',
+  DATE_TIME: 'YYYY-MM-DDTHH:mm'
 };
 
 const DEFAULT_TYPE = 'flight';
@@ -123,4 +123,11 @@ const WebsiteAddress = {
   DESTINATIONS: 'destinations',
 };
 
-export {TYPEPOINTS, DATE_FORMAT, DEFAULT_TYPE, CITIES, DESCRIPTIONS, POINT_EMPTY, DESCRIPTION_PICTURES, Duration, FAVORITE, DESTINATIONS_COUNT, POINTS_COUNT, OFFERS_MAX_COUNT, FilterType, Mode, SortType, AvailableSortType, UserAction, UpdateType, commonConfig, END_POINT, AUTHORIZATION, WebsiteAddress};
+const DateTime = {
+  MSEC_IN_SEC: 1000,
+  SEC_IN_MIN: 60,
+  MIN_IN_HOUR: 60,
+  HOUR_IN_DAY: 24
+};
+
+export {TYPEPOINTS, DateFormat, DEFAULT_TYPE, CITIES, DESCRIPTIONS, POINT_EMPTY, DESCRIPTION_PICTURES, Duration, FAVORITE, DESTINATIONS_COUNT, POINTS_COUNT, OFFERS_MAX_COUNT, FilterType, Mode, SortType, AvailableSortType, UserAction, UpdateType, commonConfig, END_POINT, AUTHORIZATION, WebsiteAddress, DateTime};
